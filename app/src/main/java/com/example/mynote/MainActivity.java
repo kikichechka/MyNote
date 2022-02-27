@@ -12,16 +12,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        NotesListFragment notesListFragment = NotesListFragment.newInstance();
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.notes_list, notesListFragment)
+                .replace(R.id.notes_list, NotesListFragment.newInstance())
                 .commit();
 
-        /*if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.notes_list, notesListFragment.newInstance());
-        }*/
+                    .replace(R.id.note_list, NoteFragment.newInstance())
+                    .commit();
+        }
     }
 }

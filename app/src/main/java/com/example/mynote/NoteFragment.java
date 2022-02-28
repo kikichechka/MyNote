@@ -9,7 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.mynote.domain.Note;
+
 public class NoteFragment extends Fragment {
+
     public static NoteFragment newInstance() {
         return new NoteFragment();
     }

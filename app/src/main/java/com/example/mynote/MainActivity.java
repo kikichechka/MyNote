@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
+import com.example.mynote.domain.Note;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -14,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.notes_list, NotesListFragment.newInstance())
+                .replace(R.id.notes_list, NotesListFragment.newInstance(new Note("0", "test", "test")))
                 .commit();
 
 

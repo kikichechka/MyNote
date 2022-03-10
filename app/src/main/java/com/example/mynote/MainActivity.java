@@ -1,31 +1,36 @@
 package com.example.mynote;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
-import android.content.res.Configuration;
 import android.os.Bundle;
 
-import com.example.mynote.domain.Note;
+import com.example.mynote.ui.item_note.NoteFragment;
+import com.example.mynote.ui.list.NotesListFragment;
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.notes_list, NotesListFragment.newInstance(new Note("0", "test", "test")))
-                .commit();
-
-
-
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.note_list, NoteFragment.newInstance())
+                    .replace(R.id.list_note_view_container, NotesListFragment.newInstance())
                     .commit();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Fragment backStackFragment = (Fragment) getSupportFragmentManager()
+                .findFragmentById(R.id.list_note_view_container);
+        if (backStackFragment != null && backStackFragment instanceof NoteFragment) {
+            onBackPressed();
         }
     }
 }

@@ -5,18 +5,19 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <FrameLayout
-        android:id="@+id/notes_list"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent">
-    </FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/note_list"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent">
-    </FrameLayout>
+        <FrameLayout
+            android:id="@+id/list_note_view_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+
+        <FrameLayout
+            android:id="@+id/note_view_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
 
 </LinearLayout>

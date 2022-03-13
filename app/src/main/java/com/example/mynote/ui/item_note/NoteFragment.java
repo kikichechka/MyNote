@@ -38,21 +38,18 @@ public class NoteFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_note, container, false);
-        TextView titleTextView = view.findViewById(R.id.title_view);
-        TextView descriptionTextView = view.findViewById(R.id.description_view);
-        titleTextView.setText(this.note.getTitle());
-        descriptionTextView.setText(this.note.getDescription());
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        /*view.findViewById(R.id.button_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                requireActivity().getSupportFragmentManager().popBackStack();
-            }
-        });*/
+        TextView titleTextView = view.findViewById(R.id.title_view);
+        TextView descriptionTextView = view.findViewById(R.id.description_view);
+
+        if (note != null) {
+            titleTextView.setText(this.note.getTitle());
+            descriptionTextView.setText(this.note.getDescription());
+        }
     }
 }

@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="20dp"
-            android:hint="Введите заголовок"
+            android:hint="@string/hint_enter_title"
             android:textColor="@color/white"
             android:inputType="text" />
 
@@ -37,7 +37,7 @@
             android:id="@+id/edit_description_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Введите описание"
+            android:hint="@string/hint_enter_description"
             android:textColor="@color/white"
             android:inputType="textMultiLine"
             android:layout_margin="20dp"/>

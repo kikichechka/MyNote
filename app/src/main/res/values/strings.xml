@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">My Note</string>
+    <string name="about">about</string>
+    <string name="exit">exit</string>
+    <string name="add_note">добавить заметку</string>
+    <string name="hint_enter_title">Введите заголовок</string>
+    <string name="hint_enter_description">Введите описание</string>
+    <string name="about_developers">about_developers</string>
+    <string name="menu">меню</string>
+    <string name="action_setting">настройки</string>
+    <string name="action_account">аккаунт</string>
+    <string name="select_application_theme">Тема приложения</string>
+    <string name="select_note_theme">Тема заметки</string>
+    <string name="account_name">Имя пользователя</string>
+    <string name="account_email">\@email</string>
+    <string name="account_password">Пароль</string>
 </resources>

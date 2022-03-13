@@ -3,6 +3,9 @@ package com.example.mynote.ui.list;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -17,11 +20,14 @@ import com.example.mynote.domain.Note;
 import com.example.mynote.domain.NotesRepositoryImpl;
 import com.example.mynote.ui.item_note.CreateNoteFragment;
 import com.example.mynote.ui.item_note.NoteFragment;
+import com.example.mynote.ui.menu.AboutFragment;
+import com.example.mynote.ui.menu.setting.AccountFragment;
+import com.example.mynote.ui.menu.setting.SettingFragment;
 
 public class NotesListFragment extends Fragment {
     NotesRepositoryImpl notesRepositoryImpl = new NotesRepositoryImpl();
     LinearLayout linearLayout;
-    Note currentNote = notesRepositoryImpl.getNotes().get(0);
+    Note currentNote;
     public static String KEY_NOTE = "note";
 
 
@@ -39,6 +45,7 @@ public class NotesListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
         linearLayout = (LinearLayout) view.findViewById(R.id.list_note_view);
 
         view.findViewById(R.id.button_create_for_fragment_note).setOnClickListener(new View.OnClickListener() {
@@ -55,6 +62,9 @@ public class NotesListFragment extends Fragment {
         if (savedInstanceState != null) {
             currentNote = savedInstanceState.getParcelable(KEY_NOTE);
         }
+        if (notesRepositoryImpl.getNotes() == null) {
+            currentNote = notesRepositoryImpl.getNotes().get(0);
+        }
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             showNoteFragment();
         }
@@ -67,6 +77,33 @@ public class NotesListFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_fragmen_list_notes, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_account:
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.list_note_view_container, new AccountFragment())
+                        .addToBackStack(" ")
+                        .commit();
+                return true;
+            case R.id.action_setting:
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.list_note_view_container, new SettingFragment())
+                        .addToBackStack("  ")
+                        .commit();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
 
         super.onSaveInstanceState(outState);
@@ -74,6 +111,7 @@ public class NotesListFragment extends Fragment {
     }
 
     private void addViewOnLinearlayout() {
+
         for (Note n : notesRepositoryImpl.getNotes()) {
             String title = n.getTitle();
             TextView textView = new TextView(getContext());
@@ -107,7 +145,6 @@ public class NotesListFragment extends Fragment {
                 notesRepositoryImpl.getNotes().get(index).getTitle(),
                 notesRepositoryImpl.getNotes().get(index).getDescription());
     }
-
 
     private void showNoteFragmentPort() {
         requireActivity().getSupportFragmentManager()

@@ -27,7 +27,6 @@ public class SettingFragment extends Fragment {
         view.findViewById(R.id.purple_theme).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
             }
         });
     }

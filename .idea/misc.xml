@@ -6,7 +6,7 @@
         <entry key="..\:/Users/Ekaterina/AndroidStudioProjects/MyNote/app/src/main/res/layout-land/activity_main.xml" value="0.28177083333333336" />
         <entry key="..\:/Users/Ekaterina/AndroidStudioProjects/MyNote/app/src/main/res/layout-land/fragment_list_notes.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/Ekaterina/AndroidStudioProjects/MyNote/app/src/main/res/layout/activity_main.xml" value="0.287962962962963" />
-        <entry key="..\:/Users/Ekaterina/AndroidStudioProjects/MyNote/app/src/main/res/layout/fragment_about.xml" value="0.3255208333333333" />
+        <entry key="..\:/Users/Ekaterina/AndroidStudioProjects/MyNote/app/src/main/res/layout/fragment_about.xml" value="0.22" />
         <entry key="..\:/Users/Ekaterina/AndroidStudioProjects/MyNote/app/src/main/res/layout/fragment_account.xml" value="0.3255208333333333" />
         <entry key="..\:/Users/Ekaterina/AndroidStudioProjects/MyNote/app/src/main/res/layout/fragment_item_note.xml" value="0.27708333333333335" />
         <entry key="..\:/Users/Ekaterina/AndroidStudioProjects/MyNote/app/src/main/res/layout/fragment_list_notes.xml" value="0.33697916666666666" />
@@ -19,7 +19,9 @@
         <entry key="..\:/Users/Ekaterina/AndroidStudioProjects/MyNote/app/src/main/res/menu/fragment_about.xml" value="0.3255208333333333" />
         <entry key="..\:/Users/Ekaterina/AndroidStudioProjects/MyNote/app/src/main/res/menu/fragment_setting.xml" value="0.3255208333333333" />
         <entry key="..\:/Users/Ekaterina/AndroidStudioProjects/MyNote/app/src/main/res/menu/menu.xml" value="0.3255208333333333" />
+        <entry key="..\:/Users/Ekaterina/AndroidStudioProjects/MyNote/app/src/main/res/menu/menu_for_fragment_note.xml" value="0.18541666666666667" />
         <entry key="..\:/Users/Ekaterina/AndroidStudioProjects/MyNote/app/src/main/res/menu/menu_fragmen_list_notes.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/Ekaterina/AndroidStudioProjects/MyNote/app/src/main/res/menu/popup_menu_for_fragment_note.xml" value="0.23645833333333333" />
       </map>
     </option>
   </component>

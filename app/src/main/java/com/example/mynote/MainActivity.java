@@ -1,12 +1,15 @@
 package com.example.mynote;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.mynote.ui.item_note.NoteFragment;
 import com.example.mynote.ui.list.NotesListFragment;
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                         .commit();
                 return true;
             case R.id.action_exit:
-                finish();
+                showAlertDialog();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -59,5 +62,15 @@ public class MainActivity extends AppCompatActivity {
         if (backStackFragment != null && backStackFragment instanceof NoteFragment) {
             onBackPressed();
         }
+    }
+    void showAlertDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("AlertDialog")
+                .setMessage("выйти из приложения?")
+                .setPositiveButton("да", ((dialogInterface, i) ->{
+                    finish();
+                }))
+                .setNeutralButton("нет", null)
+                .show();
     }
 }

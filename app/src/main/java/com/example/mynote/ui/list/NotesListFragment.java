@@ -131,19 +131,11 @@ public class NotesListFragment extends Fragment {
 
     private void showNoteFragment() {
 
-        //assignValueCurrentNote(index);
-
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             showNoteFragmentLand();
         } else {
             showNoteFragmentPort();
         }
-    }
-
-    private void assignValueCurrentNote(int index) {
-        currentNote = new Note(index,
-                notesRepositoryImpl.getNotes().get(index).getTitle(),
-                notesRepositoryImpl.getNotes().get(index).getDescription());
     }
 
     private void showNoteFragmentPort() {

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/select_application_theme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/cardview_default_elevation"
+        android:text="@string/select_application_theme"
+        android:textSize="@dimen/text_size_title"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/purple_theme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="purple theme" />
+
+    <Switch
+        android:id="@+id/burgundy_theme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="burgundy theme" />
+
+    <Switch
+        android:id="@+id/blue_theme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="blue theme" />
+
+
+    <TextView
+        android:id="@+id/select_note_theme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/cardview_default_elevation"
+        android:text="@string/select_note_theme"
+        android:textSize="@dimen/text_size_title"
+        app:layout_constraintTop_toBottomOf="@id/select_application_theme" />
+
+
+</LinearLayout>

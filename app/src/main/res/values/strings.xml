@@ -14,4 +14,6 @@
     <string name="account_name">Имя пользователя</string>
     <string name="account_email">\@email</string>
     <string name="account_password">Пароль</string>
+    <string name="button_note_edit">🖊 изменить</string>
+    <string name="button_note_delete">🗑 удалить</string>
 </resources>

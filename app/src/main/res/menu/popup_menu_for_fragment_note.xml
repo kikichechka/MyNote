@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/button_note_edit"
+        android:title="@string/button_note_edit"
+        android:iconTint="@color/transparent"/>
+
+    <item
+        android:id="@+id/button_note_delete"
+        android:title="@string/button_note_delete"
+        android:iconTint="@color/transparent"/>
+
+</menu>

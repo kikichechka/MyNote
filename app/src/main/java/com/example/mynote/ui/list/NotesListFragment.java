@@ -28,11 +28,14 @@ import com.example.mynote.ui.item_note.NoteFragment;
 import com.example.mynote.ui.menu.setting.AccountFragment;
 import com.example.mynote.ui.menu.setting.SettingFragment;
 
+import java.util.ArrayList;
+
 public class NotesListFragment extends Fragment {
     NotesRepositoryImpl notesRepositoryImpl = new NotesRepositoryImpl();
     LinearLayout linearLayout;
     Note currentNote;
     public static String KEY_NOTE = "note";
+    Adapter adapter = new Adapter();
 
 
     public static NotesListFragment newInstance() {
@@ -50,8 +53,11 @@ public class NotesListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
-        linearLayout = (LinearLayout) view.findViewById(R.id.list_note_view);
 
+        initAdapter();
+        initRecyclerView(view);
+
+        //linearLayout = (LinearLayout) view.findViewById(R.id.list_note_view);
 
         view.findViewById(R.id.button_create_for_fragment_note).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +79,21 @@ public class NotesListFragment extends Fragment {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             showNoteFragment();
         }
-        addViewOnLinearlayout();
+
+
+        //addViewOnLinearlayout();
+    }
+
+    void initAdapter() {
+        adapter = new Adapter();
+        adapter.setArrayList(notesRepositoryImpl.getNotes());
+    }
+
+    void initRecyclerView(View view) {
+        RecyclerView recyclerView = view.findViewById(R.id.list_note_view);
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
     }
 
     @Override
@@ -126,9 +146,14 @@ public class NotesListFragment extends Fragment {
             TextView textViewDescription = listItem.findViewById(R.id.description_for_item_note);
             textViewDescription.setText(n.getDescription());
 
+
             //TextView textView = new TextView(getContext());
             //textView.setText(title);
             //textView.setTextSize(30);
+
+
+
+
             linearLayout.addView(listItem);
             int finalId = n.getId();
             listItem.setOnClickListener(new View.OnClickListener() {

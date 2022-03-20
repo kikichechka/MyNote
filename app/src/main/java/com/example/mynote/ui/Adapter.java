@@ -16,7 +16,6 @@ import com.example.mynote.domain.OnItemClickListener;
 import java.util.ArrayList;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
-    NotesRepositoryImpl notesRepository;
     OnItemClickListener onItemClickListener;
     private ArrayList<Note> arrayList;
 
@@ -26,6 +25,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
     public void setArrayList(ArrayList<Note> arrayList) {
         this.arrayList = arrayList;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -37,24 +37,25 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.bindContentWithLayout(notesRepository.getNotes().get(position));
-        //holder.bindTitleWithItemNote(notesRepository.getNotes().get(position).getTitle());
-        //holder.bindDescriptionItemNote(notesRepository.getNotes().get(position).getDescription());
+        holder.bindContentWithLayout(arrayList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return notesRepository.getNotes().size();
+        return arrayList.size();
     }
 
+
+
+
+
+
     class MyViewHolder extends RecyclerView.ViewHolder {
-        //private CardView cardView;
         private TextView textViewTitle;
         private TextView textViewDescription;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            //cardView = (CardView) itemView;
             textViewTitle = (TextView) itemView.findViewById(R.id.title_for_item_note);
             textViewDescription = (TextView) itemView.findViewById(R.id.description_for_item_note);
         }

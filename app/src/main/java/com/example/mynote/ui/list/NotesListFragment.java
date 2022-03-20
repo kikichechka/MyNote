@@ -13,14 +13,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mynote.R;
+import com.example.mynote.ui.Adapter;
 import com.example.mynote.domain.Note;
 import com.example.mynote.domain.NotesRepositoryImpl;
+import com.example.mynote.domain.OnItemClickListener;
 import com.example.mynote.ui.item_note.CreateNoteFragment;
 import com.example.mynote.ui.item_note.NoteFragment;
-import com.example.mynote.ui.menu.AboutFragment;
 import com.example.mynote.ui.menu.setting.AccountFragment;
 import com.example.mynote.ui.menu.setting.SettingFragment;
 
@@ -47,6 +51,7 @@ public class NotesListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
         linearLayout = (LinearLayout) view.findViewById(R.id.list_note_view);
+
 
         view.findViewById(R.id.button_create_for_fragment_note).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,21 +116,36 @@ public class NotesListFragment extends Fragment {
     }
 
     private void addViewOnLinearlayout() {
-
+        LayoutInflater layoutInflater = getLayoutInflater();
         for (Note n : notesRepositoryImpl.getNotes()) {
-            String title = n.getTitle();
-            TextView textView = new TextView(getContext());
-            textView.setText(title);
-            textView.setTextSize(30);
-            linearLayout.addView(textView);
+            View listItem = layoutInflater.inflate(R.layout.item_note, linearLayout, false);
+
+            TextView textViewTitle = listItem.findViewById(R.id.title_for_item_note);
+            textViewTitle.setText(n.getTitle());
+
+            TextView textViewDescription = listItem.findViewById(R.id.description_for_item_note);
+            textViewDescription.setText(n.getDescription());
+
+            //TextView textView = new TextView(getContext());
+            //textView.setText(title);
+            //textView.setTextSize(30);
+            linearLayout.addView(listItem);
             int finalId = n.getId();
-            textView.setOnClickListener(new View.OnClickListener() {
+            listItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     currentNote = notesRepositoryImpl.getNotes().get(finalId);
                     showNoteFragment();
                 }
             });
+
+            /*textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    currentNote = notesRepositoryImpl.getNotes().get(finalId);
+                    showNoteFragment();
+                }
+            });*/
         }
     }
 

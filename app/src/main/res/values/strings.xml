@@ -16,4 +16,6 @@
     <string name="account_password">Пароль</string>
     <string name="button_note_edit">🖊 изменить</string>
     <string name="button_note_delete">🗑 удалить</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
 </resources>

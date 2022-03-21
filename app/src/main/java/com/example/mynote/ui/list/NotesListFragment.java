@@ -30,9 +30,8 @@ import com.example.mynote.ui.menu.setting.SettingFragment;
 
 import java.util.ArrayList;
 
-public class NotesListFragment extends Fragment {
+public class NotesListFragment extends Fragment implements OnItemClickListener{
     NotesRepositoryImpl notesRepositoryImpl = new NotesRepositoryImpl();
-    LinearLayout linearLayout;
     Note currentNote;
     public static String KEY_NOTE = "note";
     Adapter adapter = new Adapter();
@@ -57,14 +56,12 @@ public class NotesListFragment extends Fragment {
         initAdapter();
         initRecyclerView(view);
 
-        //linearLayout = (LinearLayout) view.findViewById(R.id.list_note_view);
-
         view.findViewById(R.id.button_create_for_fragment_note).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.list_note_view_container, CreateNoteFragment.newInstance())
+                        .replace(R.id.list_note_view_container, CreateNoteFragment.newInstance(currentNote))
                         .addToBackStack("")
                         .commit();
             }
@@ -80,18 +77,16 @@ public class NotesListFragment extends Fragment {
             showNoteFragment();
         }
 
-
-        //addViewOnLinearlayout();
     }
 
     void initAdapter() {
         adapter = new Adapter();
         adapter.setArrayList(notesRepositoryImpl.getNotes());
+        adapter.setOnItemClickListener(this);
     }
 
     void initRecyclerView(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.list_note_view);
-
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
     }
@@ -135,43 +130,11 @@ public class NotesListFragment extends Fragment {
         outState.putParcelable(KEY_NOTE, currentNote);
     }
 
-    private void addViewOnLinearlayout() {
-        LayoutInflater layoutInflater = getLayoutInflater();
-        for (Note n : notesRepositoryImpl.getNotes()) {
-            View listItem = layoutInflater.inflate(R.layout.item_note, linearLayout, false);
-
-            TextView textViewTitle = listItem.findViewById(R.id.title_for_item_note);
-            textViewTitle.setText(n.getTitle());
-
-            TextView textViewDescription = listItem.findViewById(R.id.description_for_item_note);
-            textViewDescription.setText(n.getDescription());
-
-
-            //TextView textView = new TextView(getContext());
-            //textView.setText(title);
-            //textView.setTextSize(30);
-
-
-
-
-            linearLayout.addView(listItem);
-            int finalId = n.getId();
-            listItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    currentNote = notesRepositoryImpl.getNotes().get(finalId);
-                    showNoteFragment();
-                }
-            });
-
-            /*textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    currentNote = notesRepositoryImpl.getNotes().get(finalId);
-                    showNoteFragment();
-                }
-            });*/
-        }
+    @Override
+    public void onItemClick(int position) {
+        ArrayList<Note> arrayList = notesRepositoryImpl.getNotes();
+        currentNote = arrayList.get(position);
+        showNoteFragment();
     }
 
     private void showNoteFragment() {

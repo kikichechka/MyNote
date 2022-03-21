@@ -73,6 +73,11 @@ public class NoteFragment extends Fragment {
                             new MyDialogFragment().show(getActivity().getSupportFragmentManager(), "abc");
                             return true;
                         case R.id.button_note_edit:
+                            requireActivity().getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.list_note_view_container, CreateNoteFragment.newInstance(note))
+                                    .addToBackStack("abc")
+                                    .commit();
                             Toast.makeText(requireContext(), "текст", Toast.LENGTH_SHORT).show();
                             return true;
                         default:

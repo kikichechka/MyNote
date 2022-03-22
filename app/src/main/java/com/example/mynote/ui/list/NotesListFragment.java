@@ -8,14 +8,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mynote.R;
@@ -33,6 +29,7 @@ import java.util.ArrayList;
 public class NotesListFragment extends Fragment implements OnItemClickListener{
     NotesRepositoryImpl notesRepositoryImpl = new NotesRepositoryImpl();
     Note currentNote;
+    Note nullNote;
     public static String KEY_NOTE = "note";
     Adapter adapter = new Adapter();
 
@@ -61,7 +58,7 @@ public class NotesListFragment extends Fragment implements OnItemClickListener{
             public void onClick(View view) {
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.list_note_view_container, CreateNoteFragment.newInstance(currentNote))
+                        .replace(R.id.list_note_view_container, CreateNoteFragment.newInstance(nullNote))
                         .addToBackStack("")
                         .commit();
             }

@@ -15,11 +15,14 @@ import androidx.fragment.app.Fragment;
 import com.example.mynote.R;
 import com.example.mynote.domain.Note;
 import com.example.mynote.domain.NotesRepositoryImpl;
+import com.example.mynote.ui.Adapter;
+import com.example.mynote.ui.list.NotesListFragment;
 
 
 public class CreateNoteFragment extends Fragment {
     private Note note;
     private NotesRepositoryImpl notesRepositoryImpl = new NotesRepositoryImpl();
+    Adapter adapter = new Adapter();
     private String title;
     private String description;
     public static String ARG_NOTE = "note";
@@ -38,7 +41,7 @@ public class CreateNoteFragment extends Fragment {
 
         if (getArguments() != null) {
             this.note = getArguments().getParcelable(ARG_NOTE);
-          }
+        }
     }
 
     @Nullable
@@ -55,7 +58,7 @@ public class CreateNoteFragment extends Fragment {
         EditText editTextTitle = view.findViewById(R.id.edit_title_container);
         EditText editTextDescription = view.findViewById(R.id.edit_description_container);
 
-        if(note != null) {
+        if (note != null) {
             editTextTitle.setText(this.note.getTitle());
             editTextDescription.setText(this.note.getDescription());
         }
@@ -97,9 +100,15 @@ public class CreateNoteFragment extends Fragment {
         view.findViewById(R.id.button_save_new_note).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int index = notesRepositoryImpl.getNotes().size();
-                    notesRepositoryImpl.addNote(new Note(index, title, description));
-                    requireActivity().getSupportFragmentManager().popBackStack();
+                int index;
+                if (notesRepositoryImpl != null) {
+                    index = notesRepositoryImpl.getNotes().size();
+                } else {
+                    index = 0;
+                }
+                notesRepositoryImpl.addNote(new Note(index, title, description, false));
+                adapter.notifyItemInserted(index);
+                requireActivity().getSupportFragmentManager().popBackStack();
             }
         });
 

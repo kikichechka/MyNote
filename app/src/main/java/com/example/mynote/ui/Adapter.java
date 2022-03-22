@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,11 +51,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
     class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewTitle;
         private TextView textViewDescription;
+        private ToggleButton toggleButton;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             textViewTitle = (TextView) itemView.findViewById(R.id.title_for_item_note);
             textViewDescription = (TextView) itemView.findViewById(R.id.description_for_item_note);
+            toggleButton = (ToggleButton) itemView.findViewById(R.id.like_in_item_note);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -69,6 +72,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         public void bindContentWithLayout (Note content) {
             textViewTitle.setText(content.getTitle());
             textViewDescription.setText(content.getDescription());
+            toggleButton.setChecked(content.isLike());
         }
     }
 }

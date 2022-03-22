@@ -16,12 +16,13 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mynote.R;
 import com.example.mynote.domain.Note;
+import com.example.mynote.domain.NotesRepositoryImpl;
 import com.example.mynote.ui.menu.MyDialogFragment;
 
 public class NoteFragment extends Fragment {
     private Note note;
     public static String ARG_NOTE = "note";
-
+    NotesRepositoryImpl notesRepository;
 
     public static NoteFragment newInstance(Note note) {
         NoteFragment fragment = new NoteFragment();
@@ -51,11 +52,12 @@ public class NoteFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         TextView titleTextView = view.findViewById(R.id.title_view);
         TextView descriptionTextView = view.findViewById(R.id.description_view);
-        show(view);
+        //show(view);
 
         if (note != null) {
             titleTextView.setText(this.note.getTitle());
             descriptionTextView.setText(this.note.getDescription());
+            show(view);
         }
     }
 
@@ -70,6 +72,7 @@ public class NoteFragment extends Fragment {
                     switch (menuItem.getItemId()) {
                         case R.id.button_note_delete:
                             //showAlertDialog();
+                            notesRepository.deleteNote(note.getId());
                             new MyDialogFragment().show(getActivity().getSupportFragmentManager(), "abc");
                             return true;
                         case R.id.button_note_edit:

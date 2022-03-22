@@ -2,12 +2,9 @@ package com.example.mynote.ui.item_note;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,10 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mynote.R;
 import com.example.mynote.domain.Note;
-import com.example.mynote.domain.NotesRepositoryImpl;
-import com.example.mynote.ui.list.NotesListFragment;
-import com.example.mynote.ui.menu.setting.AccountFragment;
-import com.google.android.material.snackbar.Snackbar;
+import com.example.mynote.ui.menu.MyDialogFragment;
 
 public class NoteFragment extends Fragment {
     private Note note;
@@ -75,10 +69,15 @@ public class NoteFragment extends Fragment {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     switch (menuItem.getItemId()) {
                         case R.id.button_note_delete:
-                            //requireActivity().getSupportFragmentManager().popBackStack();
-                            showAlertDialog();
+                            //showAlertDialog();
+                            new MyDialogFragment().show(getActivity().getSupportFragmentManager(), "abc");
                             return true;
                         case R.id.button_note_edit:
+                            requireActivity().getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .replace(R.id.list_note_view_container, CreateNoteFragment.newInstance(note))
+                                    .addToBackStack("abc")
+                                    .commit();
                             Toast.makeText(requireContext(), "текст", Toast.LENGTH_SHORT).show();
                             return true;
                         default:
@@ -94,10 +93,15 @@ public class NoteFragment extends Fragment {
         new AlertDialog.Builder(requireContext())
                 .setTitle("AlertDialog")
                 .setMessage("удалить заметку?")
-                .setPositiveButton("да", ((dialogInterface, i) -> {
+                .setPositiveButton("да", (dialogInterface, i) -> {
                     Toast.makeText(requireContext(), this.note.getTitle() + " удалена", Toast.LENGTH_SHORT).show();
-                }))
+                    requireActivity().getSupportFragmentManager().popBackStack();
+                })
                 .setNeutralButton("нет", null)
                 .show();
+    }
+
+    public Note getNote() {
+        return note;
     }
 }

@@ -3,7 +3,6 @@ package com.example.mynote.ui.item_note;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,25 +18,27 @@ import com.example.mynote.domain.NotesRepositoryImpl;
 
 
 public class CreateNoteFragment extends Fragment {
+    private Note note;
     private NotesRepositoryImpl notesRepositoryImpl = new NotesRepositoryImpl();
-    private EditText editTextTitle;
-    private EditText editTextDescription;
     private String title;
     private String description;
-    public static String ARG_TITLE = "title";
-    public static String ARG_DESCRIPTION = "description";
+    public static String ARG_NOTE = "note";
 
-    public static CreateNoteFragment newInstance() {
-        return new CreateNoteFragment();
+    public static CreateNoteFragment newInstance(Note note) {
+        CreateNoteFragment createNoteFragment = new CreateNoteFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(ARG_NOTE, note);
+        createNoteFragment.setArguments(bundle);
+        return createNoteFragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
-            this.title = getArguments().getParcelable(ARG_TITLE);
-            this.description = getArguments().getParcelable(ARG_DESCRIPTION);
-        }
+            this.note = getArguments().getParcelable(ARG_NOTE);
+          }
     }
 
     @Nullable
@@ -51,8 +52,13 @@ public class CreateNoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        editTextTitle = view.findViewById(R.id.edit_title_container);
-        editTextDescription = view.findViewById(R.id.edit_description_container);
+        EditText editTextTitle = view.findViewById(R.id.edit_title_container);
+        EditText editTextDescription = view.findViewById(R.id.edit_description_container);
+
+        if(note != null) {
+            editTextTitle.setText(this.note.getTitle());
+            editTextDescription.setText(this.note.getDescription());
+        }
 
         editTextTitle.addTextChangedListener(new TextWatcher() {
             @Override

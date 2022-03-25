@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list_note_view_container"
@@ -8,4 +8,4 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-</LinearLayout>
+</FrameLayout>

@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mynote.MainActivity;
 import com.example.mynote.R;
 import com.example.mynote.domain.NotesRepository;
 import com.example.mynote.publisher.Observer;
@@ -27,6 +28,7 @@ import com.example.mynote.ui.menu.setting.AccountFragment;
 import com.example.mynote.ui.menu.setting.SettingFragment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class NotesListFragment extends Fragment implements OnItemClickListener, Observer {
     NotesRepositoryImpl notesRepositoryImpl = new NotesRepositoryImpl();
@@ -57,9 +59,24 @@ public class NotesListFragment extends Fragment implements OnItemClickListener, 
         view.findViewById(R.id.button_create_for_fragment_note).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Observer observer = new Observer() {
+                    @Override
+                    public void receiveMessage(Note note) {
+                        ((MainActivity) requireActivity()).getPublisher().unSubscribe(this);
+                        notesRepositoryImpl.addNote( note);
+                        //adapter.notifyItemInserted(notesRepositoryImpl.size() - 1);
+                        adapter.notifyDataSetChanged();
+                    }
+                };
+                ((MainActivity) requireActivity()).getPublisher().subscribe(observer);
+
+
+                // у R.id.list_note_view_container изменил тип с LinearLayout на FrameLayout
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.list_note_view_container, CreateNoteFragment.newInstance(nullNote))
+                        .add(R.id.list_note_view_container, CreateNoteFragment.newInstance(nullNote)) //заменил здесь replace на add,
+                        // чтобы NotesListFragment не "умер" а ждал пока к нему вернемся
                         .addToBackStack("")
                         .commit();
             }
@@ -78,7 +95,7 @@ public class NotesListFragment extends Fragment implements OnItemClickListener, 
     }
 
     void initAdapter() {
-        adapter = new Adapter();
+        //adapter = new Adapter(); это было лишним
         adapter.setArrayList(notesRepositoryImpl.getNotes());
         adapter.setOnItemClickListener(this);
     }

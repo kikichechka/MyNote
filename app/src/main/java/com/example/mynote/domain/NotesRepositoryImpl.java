@@ -29,6 +29,12 @@ public class NotesRepositoryImpl implements NotesRepository {
         return notesList;
     }
 
+
+
+    public int size() {
+        return notesList.size();
+    }
+
     public void addNote(Note note) {
         notesList.add(note);
     }

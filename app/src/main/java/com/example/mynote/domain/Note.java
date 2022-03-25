@@ -16,17 +16,18 @@ public class Note implements Parcelable {
         this.like = like;
     }
 
-    public Note(int id, String title, String description) {
+    public Note(int id, String title, String description, Note note) {
         this.id = id;
         this.title = title;
         this.description = description;
     }
 
+
     protected Note(Parcel in) {
         id = in.readInt();
         title = in.readString();
         description = in.readString();
-        //like = in.hasFileDescriptors();
+        like = in.readByte() != 0;
     }
 
     public static final Creator<Note> CREATOR = new Creator<Note>() {
@@ -40,6 +41,19 @@ public class Note implements Parcelable {
             return new Note[size];
         }
     };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(title);
+        parcel.writeString(description);
+        parcel.writeByte((byte) (like ? 1 : 0));
+    }
 
     public int getId() {
         return id;
@@ -67,19 +81,5 @@ public class Note implements Parcelable {
 
     public void setLike(boolean like) {
         this.like = like;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeString(title);
-        parcel.writeString(description);
-        //parcel.writeBoolean(like);
     }
 }

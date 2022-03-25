@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mynote.R;
+import com.example.mynote.domain.NotesRepository;
+import com.example.mynote.publisher.Observer;
 import com.example.mynote.ui.Adapter;
 import com.example.mynote.domain.Note;
 import com.example.mynote.domain.NotesRepositoryImpl;
@@ -26,13 +28,12 @@ import com.example.mynote.ui.menu.setting.SettingFragment;
 
 import java.util.ArrayList;
 
-public class NotesListFragment extends Fragment implements OnItemClickListener{
+public class NotesListFragment extends Fragment implements OnItemClickListener, Observer {
     NotesRepositoryImpl notesRepositoryImpl = new NotesRepositoryImpl();
     Note currentNote;
     Note nullNote;
     public static String KEY_NOTE = "note";
     Adapter adapter = new Adapter();
-
 
     public static NotesListFragment newInstance() {
         return new NotesListFragment();
@@ -67,9 +68,9 @@ public class NotesListFragment extends Fragment implements OnItemClickListener{
         if (savedInstanceState != null) {
             currentNote = savedInstanceState.getParcelable(KEY_NOTE);
         }
-        if (notesRepositoryImpl.getNotes() == null) {
-            currentNote = notesRepositoryImpl.getNotes().get(0);
-        }
+        //if (notesRepositoryImpl.getNotes() == null) {
+         //   currentNote = notesRepositoryImpl.getNotes().get(0);
+        //}
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             showNoteFragment();
         }
@@ -156,5 +157,17 @@ public class NotesListFragment extends Fragment implements OnItemClickListener{
                 .beginTransaction()
                 .replace(R.id.note_view_container, NoteFragment.newInstance(currentNote))
                 .commit();
+    }
+
+    @Override
+    public void receiveMessage(Note note) {
+        int id = note.getId();
+        if (notesRepositoryImpl.getNotes().get(id) != null) {
+            notesRepositoryImpl.changeNote(id, note);
+            adapter.notifyItemInserted(id);
+        } else {
+            notesRepositoryImpl.addNote(note);
+            adapter.notifyDataSetChanged();
+        }
     }
 }

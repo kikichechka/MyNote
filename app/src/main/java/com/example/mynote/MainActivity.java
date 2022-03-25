@@ -11,17 +11,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.mynote.publisher.Publisher;
 import com.example.mynote.ui.item_note.NoteFragment;
 import com.example.mynote.ui.list.NotesListFragment;
 import com.example.mynote.ui.menu.AboutFragment;
 
 public class MainActivity extends AppCompatActivity {
+    private Publisher publisher;
 
+    public Publisher getPublisher() {
+        return publisher;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        publisher = new Publisher();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager()
@@ -64,11 +70,12 @@ public class MainActivity extends AppCompatActivity {
             onBackPressed();
         }
     }
+
     void showAlertDialog() {
         new AlertDialog.Builder(this)
                 .setTitle("AlertDialog")
                 .setMessage("выйти из приложения?")
-                .setPositiveButton("да", ((dialogInterface, i) ->{
+                .setPositiveButton("да", ((dialogInterface, i) -> {
                     finish();
                 }))
                 .setNeutralButton("нет", null)

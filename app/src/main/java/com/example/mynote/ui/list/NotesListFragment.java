@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mynote.MainActivity;
 import com.example.mynote.R;
 import com.example.mynote.domain.NotesRepository;
 import com.example.mynote.publisher.Observer;
@@ -54,9 +55,21 @@ public class NotesListFragment extends Fragment implements OnItemClickListener, 
         initAdapter();
         initRecyclerView(view);
 
+
         view.findViewById(R.id.button_create_for_fragment_note).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Observer observer = new Observer() {
+                    @Override
+                    public void receiveMessage(Note note) {
+                        ((MainActivity) requireActivity()).getPublisher().unSubscribe(this);
+                        notesRepositoryImpl.addNote(note);
+                        adapter.notifyDataSetChanged();
+                    }
+                };
+                ((MainActivity) requireActivity()).getPublisher().subscribe(observer);
+
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.list_note_view_container, CreateNoteFragment.newInstance(nullNote))
@@ -68,9 +81,6 @@ public class NotesListFragment extends Fragment implements OnItemClickListener, 
         if (savedInstanceState != null) {
             currentNote = savedInstanceState.getParcelable(KEY_NOTE);
         }
-        //if (notesRepositoryImpl.getNotes() == null) {
-         //   currentNote = notesRepositoryImpl.getNotes().get(0);
-        //}
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             showNoteFragment();
         }
@@ -78,7 +88,6 @@ public class NotesListFragment extends Fragment implements OnItemClickListener, 
     }
 
     void initAdapter() {
-        adapter = new Adapter();
         adapter.setArrayList(notesRepositoryImpl.getNotes());
         adapter.setOnItemClickListener(this);
     }

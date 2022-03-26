@@ -26,6 +26,7 @@ public class CreateNoteFragment extends Fragment {
     private String title;
     private String description;
     public static String ARG_NOTE = "note";
+    int index;
 
     public static CreateNoteFragment newInstance(Note note) {
         CreateNoteFragment createNoteFragment = new CreateNoteFragment();
@@ -58,8 +59,11 @@ public class CreateNoteFragment extends Fragment {
         EditText editTextDescription = view.findViewById(R.id.edit_description_container);
 
         if (note != null) {
+            index = note.getId();
             editTextTitle.setText(this.note.getTitle());
             editTextDescription.setText(this.note.getDescription());
+        } else {
+            index = notesRepositoryImpl.size();
         }
 
         editTextTitleWatcher(editTextTitle);
@@ -112,19 +116,18 @@ public class CreateNoteFragment extends Fragment {
         view.findViewById(R.id.button_save_new_note).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int index;
-                if (notesRepositoryImpl.getNotes().size() != 0) {
-                    index = notesRepositoryImpl.getNotes().size();
-                } else {
-                    index = 0;
-                }
+
                 note = new Note(index, title, description, false);
-                notesRepositoryImpl.addNote(note);
+
                 ((MainActivity) requireActivity()).getPublisher().sendMessage(note);
-                //((MainActivity) requireActivity()).getPublisher().sendMessage(note);
                 requireActivity().getSupportFragmentManager().popBackStack();
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     void implementationButtonBack (View view) {

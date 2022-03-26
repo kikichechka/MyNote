@@ -18,14 +18,18 @@ import com.example.mynote.MainActivity;
 import com.example.mynote.R;
 import com.example.mynote.domain.Note;
 import com.example.mynote.domain.NotesRepositoryImpl;
+import com.example.mynote.publisher.Observer;
 import com.example.mynote.publisher.Publisher;
 import com.example.mynote.ui.menu.MyDialogFragment;
 
-public class NoteFragment extends Fragment {
+public class NoteFragment extends Fragment{
     private Note note;
     public static String ARG_NOTE = "note";
     NotesRepositoryImpl notesRepository;
-    private Publisher publisher;
+    //private Publisher publisher;
+    TextView titleTextView;
+    TextView descriptionTextView;
+    int index;
 
     public static NoteFragment newInstance(Note note) {
         NoteFragment fragment = new NoteFragment();
@@ -53,13 +57,14 @@ public class NoteFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TextView titleTextView = view.findViewById(R.id.title_view);
-        TextView descriptionTextView = view.findViewById(R.id.description_view);
-        ((MainActivity)requireActivity()).getPublisher().sendMessage(note);
+        titleTextView = view.findViewById(R.id.title_view);
+        descriptionTextView = view.findViewById(R.id.description_view);
+        //((MainActivity)requireActivity()).getPublisher().sendMessage(note);
 
         if (note != null) {
             titleTextView.setText(this.note.getTitle());
             descriptionTextView.setText(this.note.getDescription());
+            index = this.note.getId();
             show(view);
         }
     }
@@ -74,11 +79,12 @@ public class NoteFragment extends Fragment {
                 public boolean onMenuItemClick(MenuItem menuItem) {
                     switch (menuItem.getItemId()) {
                         case R.id.button_note_delete:
-                            publisher.sendMessage(note);
-                            //notesRepository.deleteNote(note.getId());
+
                             new MyDialogFragment().show(getActivity().getSupportFragmentManager(), "abc");
                             return true;
                         case R.id.button_note_edit:
+
+
                             requireActivity().getSupportFragmentManager()
                                     .beginTransaction()
                                     .replace(R.id.list_note_view_container, CreateNoteFragment.newInstance(note))

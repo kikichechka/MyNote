@@ -14,7 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mynote.MainActivity;
 import com.example.mynote.R;
+import com.example.mynote.publisher.Observer;
 import com.example.mynote.ui.Adapter;
 import com.example.mynote.domain.Note;
 import com.example.mynote.domain.NotesRepositoryImpl;
@@ -26,13 +28,14 @@ import com.example.mynote.ui.menu.setting.SettingFragment;
 
 import java.util.ArrayList;
 
-public class NotesListFragment extends Fragment implements OnItemClickListener{
+public class NotesListFragment extends Fragment implements OnItemClickListener, Observer {
     NotesRepositoryImpl notesRepositoryImpl = new NotesRepositoryImpl();
+
     Note currentNote;
     Note nullNote;
     public static String KEY_NOTE = "note";
     Adapter adapter = new Adapter();
-
+    int index = 0;
 
     public static NotesListFragment newInstance() {
         return new NotesListFragment();
@@ -53,22 +56,23 @@ public class NotesListFragment extends Fragment implements OnItemClickListener{
         initAdapter();
         initRecyclerView(view);
 
+
         view.findViewById(R.id.button_create_for_fragment_note).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 requireActivity().getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.list_note_view_container, CreateNoteFragment.newInstance(nullNote))
+                        .replace(R.id.list_note_view_container, CreateNoteFragment.newInstance(index, nullNote))
                         .addToBackStack("")
                         .commit();
+
+                index ++;
             }
         });
 
         if (savedInstanceState != null) {
             currentNote = savedInstanceState.getParcelable(KEY_NOTE);
-        }
-        if (notesRepositoryImpl.getNotes() == null) {
-            currentNote = notesRepositoryImpl.getNotes().get(0);
         }
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             showNoteFragment();
@@ -77,7 +81,6 @@ public class NotesListFragment extends Fragment implements OnItemClickListener{
     }
 
     void initAdapter() {
-        adapter = new Adapter();
         adapter.setArrayList(notesRepositoryImpl.getNotes());
         adapter.setOnItemClickListener(this);
     }
@@ -91,6 +94,7 @@ public class NotesListFragment extends Fragment implements OnItemClickListener{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((MainActivity) requireActivity()).getPublisher().subscribe(this);
     }
 
     @Override
@@ -130,6 +134,7 @@ public class NotesListFragment extends Fragment implements OnItemClickListener{
     @Override
     public void onItemClick(int position) {
         ArrayList<Note> arrayList = notesRepositoryImpl.getNotes();
+        int i = arrayList.get(position).getId();
         currentNote = arrayList.get(position);
         showNoteFragment();
     }
@@ -147,7 +152,7 @@ public class NotesListFragment extends Fragment implements OnItemClickListener{
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.list_note_view_container, NoteFragment.newInstance(currentNote))
-                .addToBackStack("")
+                .addToBackStack("a")
                 .commit();
     }
 
@@ -155,6 +160,26 @@ public class NotesListFragment extends Fragment implements OnItemClickListener{
         requireActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.note_view_container, NoteFragment.newInstance(currentNote))
+                .addToBackStack("aB")
                 .commit();
+    }
+
+    @Override
+    public void receiveMessage(String massage, Note note) {
+        int id = note.getId();
+        switch (massage) {
+            case "delete":
+                notesRepositoryImpl.deleteNote(id);
+                adapter.notifyItemRemoved(id);
+                break;
+            case "add":
+                notesRepositoryImpl.addNote(note);
+                adapter.notifyItemInserted(id);
+                break;
+            case "change":
+                notesRepositoryImpl.changeNote(id, note);
+                adapter.notifyItemChanged(id);
+                break;
+        }
     }
 }

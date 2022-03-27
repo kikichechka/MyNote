@@ -24,6 +24,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
         this.onItemClickListener = onItemClickListener;
     }
 
+    public ArrayList<Note> getArrayList() {
+        return arrayList;
+    }
+
     public void setArrayList(ArrayList<Note> arrayList) {
         this.arrayList = arrayList;
         notifyDataSetChanged();

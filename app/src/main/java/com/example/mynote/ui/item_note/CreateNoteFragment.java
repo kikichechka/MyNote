@@ -17,7 +17,12 @@ import com.example.mynote.MainActivity;
 import com.example.mynote.R;
 import com.example.mynote.domain.Note;
 import com.example.mynote.domain.NotesRepositoryImpl;
+import com.example.mynote.publisher.Observer;
 import com.example.mynote.publisher.Publisher;
+import com.example.mynote.ui.Adapter;
+import com.example.mynote.ui.list.NotesListFragment;
+
+import java.util.ArrayList;
 
 
 public class CreateNoteFragment extends Fragment {
@@ -26,10 +31,12 @@ public class CreateNoteFragment extends Fragment {
     private String title;
     private String description;
     public static String ARG_NOTE = "note";
+    boolean editing;
     int index;
 
-    public static CreateNoteFragment newInstance(Note note) {
+    public static CreateNoteFragment newInstance(int id, Note note) {
         CreateNoteFragment createNoteFragment = new CreateNoteFragment();
+        //createNoteFragment.index = id;
         Bundle bundle = new Bundle();
         bundle.putParcelable(ARG_NOTE, note);
         createNoteFragment.setArguments(bundle);
@@ -43,6 +50,7 @@ public class CreateNoteFragment extends Fragment {
         if (getArguments() != null) {
             this.note = getArguments().getParcelable(ARG_NOTE);
         }
+
     }
 
     @Nullable
@@ -59,11 +67,12 @@ public class CreateNoteFragment extends Fragment {
         EditText editTextDescription = view.findViewById(R.id.edit_description_container);
 
         if (note != null) {
+            editing = true;
             index = note.getId();
             editTextTitle.setText(this.note.getTitle());
+            title = note.getTitle();
+            description = note.getDescription();
             editTextDescription.setText(this.note.getDescription());
-        } else {
-            index = notesRepositoryImpl.size();
         }
 
         editTextTitleWatcher(editTextTitle);
@@ -116,11 +125,17 @@ public class CreateNoteFragment extends Fragment {
         view.findViewById(R.id.button_save_new_note).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 note = new Note(index, title, description, false);
+                String message;
 
-                ((MainActivity) requireActivity()).getPublisher().sendMessage(note);
+                if (editing == true) {// если редактировалась заметка
+                    message = Observer.change;
+                } else { // если создавалась новая
+                    message = Observer.add;
+                }
                 requireActivity().getSupportFragmentManager().popBackStack();
+                ((MainActivity) requireActivity()).getPublisher().sendMessage(message, note);
+
             }
         });
     }

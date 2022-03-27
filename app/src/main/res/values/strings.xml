@@ -19,4 +19,8 @@
     <string name="title">Title</string>
     <string name="description">Description</string>
     <string name="question_exit">"выйти из приложения?"</string>
+    <string name="question_delete">удалить заметку?</string>
+    <string name="answer_yes">да</string>
+    <string name="answer_no">нет</string>
+    <string name="note_delete">заметка удалена</string>
 </resources>

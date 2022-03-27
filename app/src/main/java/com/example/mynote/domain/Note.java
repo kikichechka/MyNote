@@ -16,12 +16,11 @@ public class Note implements Parcelable {
         this.like = like;
     }
 
-    public Note(int id, String title, String description, Note note) {
+    public Note(int id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;
     }
-
 
     protected Note(Parcel in) {
         id = in.readInt();

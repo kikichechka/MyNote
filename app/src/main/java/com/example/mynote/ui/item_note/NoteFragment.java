@@ -1,6 +1,6 @@
 package com.example.mynote.ui.item_note;
 
-import android.content.Context;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,16 +17,14 @@ import androidx.fragment.app.Fragment;
 import com.example.mynote.MainActivity;
 import com.example.mynote.R;
 import com.example.mynote.domain.Note;
-import com.example.mynote.domain.NotesRepositoryImpl;
+
 import com.example.mynote.publisher.Observer;
-import com.example.mynote.publisher.Publisher;
+
 import com.example.mynote.ui.menu.MyDialogFragment;
 
-public class NoteFragment extends Fragment{
+public class NoteFragment extends Fragment {
     private Note note;
     public static String ARG_NOTE = "note";
-    NotesRepositoryImpl notesRepository;
-    //private Publisher publisher;
     TextView titleTextView;
     TextView descriptionTextView;
     int index;
@@ -59,7 +57,6 @@ public class NoteFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         titleTextView = view.findViewById(R.id.title_view);
         descriptionTextView = view.findViewById(R.id.description_view);
-        //((MainActivity)requireActivity()).getPublisher().sendMessage(note);
 
         if (note != null) {
             titleTextView.setText(this.note.getTitle());
@@ -80,18 +77,16 @@ public class NoteFragment extends Fragment{
                     switch (menuItem.getItemId()) {
                         case R.id.button_note_delete:
 
-                            new MyDialogFragment().show(getActivity().getSupportFragmentManager(), "abc");
+                            MyDialogFragment myDialogFragment = new MyDialogFragment();
+                            myDialogFragment.setNote(note);
+                            myDialogFragment.show(getActivity().getSupportFragmentManager(), "abc");
+
+
                             return true;
                         case R.id.button_note_edit:
-
-
-                            requireActivity().getSupportFragmentManager()
-                                    .beginTransaction()
-                                    .replace(R.id.list_note_view_container, CreateNoteFragment.newInstance(note))
-                                    .addToBackStack("abc")
-                                    .commit();
-                            Toast.makeText(requireContext(), "текст", Toast.LENGTH_SHORT).show();
+                            editNote();
                             return true;
+
                         default:
                             return false;
                     }
@@ -101,7 +96,34 @@ public class NoteFragment extends Fragment{
         });
     }
 
+    private void editNote() {
+        Observer observer = new Observer() {
+            @Override
+            public void receiveMessage(String message, Note note) {
+                ((MainActivity) requireActivity()).getPublisher().unSubscribe(this);
+                setNote(note);
+            }
+        };
+
+        ((MainActivity) requireActivity()).getPublisher().subscribe(observer);
+
+        requireActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.list_note_view_container, CreateNoteFragment.newInstance(note.getId(), note))
+                .addToBackStack("abcd")
+                .commit();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
     public Note getNote() {
         return note;
+    }
+
+    public void setNote(Note note) {
+        this.note = note;
     }
 }

@@ -20,9 +20,9 @@ public class Publisher {
         observers.remove(observer);
     } // отписать
 
-    public void sendMessage(Note note) { // отправить сообщение
+    public void sendMessage(String message, Note note) { // отправить сообщение
         for (Observer o: observers) {
-            o.receiveMessage(note);
+            o.receiveMessage(message, note);
         }
     }
 }
